@@ -11,9 +11,11 @@ public class ServerArgs {
     @Parameter(names = {"-h", "--help"}, help = true)
     private boolean help = false;
 
-    public void parseArgs(final String[] argv) throws MqttException {
+    public void parseArgs(final String programName, final String[] argv) throws MqttException {
         try {
             final JCommander jcom = new JCommander(this, argv);
+            jcom.setProgramName(programName);
+
             if (this.help) {
                 jcom.usage();
                 System.exit(1);

@@ -14,7 +14,7 @@ public class SysWatcher {
 
         final ServerArgs cliArgs = new ServerArgs();
         try {
-            cliArgs.parseArgs(argv);
+            cliArgs.parseArgs(SysWatcher.class.getName(), argv);
         }
         catch (MqttException e) {
             return;

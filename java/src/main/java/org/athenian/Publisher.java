@@ -13,7 +13,7 @@ public class Publisher {
 
         final CountArgs cliArgs = new CountArgs();
         try {
-            cliArgs.parseArgs(argv);
+            cliArgs.parseArgs(Publisher.class.getName(), argv);
         }
         catch (MqttException e) {
             return;

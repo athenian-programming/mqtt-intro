@@ -15,7 +15,7 @@ public class Subscriber {
     public static void main(final String[] argv) throws InterruptedException {
         final TopicArgs cliArgs = new TopicArgs();
         try {
-            cliArgs.parseArgs(argv);
+            cliArgs.parseArgs(Subscriber.class.getName(), argv);
         }
         catch (MqttException e) {
             return;
