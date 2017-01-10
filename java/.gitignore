@@ -1,0 +1,14 @@
+.DS_Store
+target
+appassembler
+logs
+.clover
+
+*.iws
+*.ids
+*.iml
+*.ipr
+
+.idea
+
+/paho*
