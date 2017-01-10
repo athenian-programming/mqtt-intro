@@ -29,7 +29,7 @@ def on_publish(client, userdata, mid):
 
 def publish_messages(client, userdata):
     for i in range(0, 1000):
-        result, mid = client.publish(userdata[TOPIC], payload=i)
+        result, mid = client.publish(userdata[TOPIC], payload=i.to_bytes(4, byteorder="big"))
         time.sleep(1)
 
 

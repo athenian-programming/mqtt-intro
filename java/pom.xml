@@ -94,7 +94,7 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <finalName>publisher</finalName>
+                            <finalName>subscriber</finalName>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>

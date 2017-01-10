@@ -14,12 +14,17 @@ public class Subscriber {
 
     public static void main(final String[] argv) throws InterruptedException {
         final TopicCliArgs cliArgs = new TopicCliArgs();
-        cliArgs.parseArgs(argv);
+        try {
+            cliArgs.parseArgs(argv);
+        }
+        catch (MqttException e) {
+            return;
+        }
 
-        final String mqtt_hostname = MqttUtils.getMqttHostname(cliArgs.mqtt_arg);
-        final int mqtt_port = MqttUtils.getMqttPort(cliArgs.mqtt_arg);
+        final String mqtt_hostname = Utils.getMqttHostname(cliArgs.mqtt_arg);
+        final int mqtt_port = Utils.getMqttPort(cliArgs.mqtt_arg);
 
-        final MqttClient client = MqttUtils.createMqttClient(mqtt_hostname, mqtt_port, new BaseMqttCallback());
+        final MqttClient client = Utils.createMqttClient(mqtt_hostname, mqtt_port, new BaseMqttCallback());
         if (client != null) {
             try {
                 client.subscribe(cliArgs.mqtt_topic,

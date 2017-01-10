@@ -12,10 +12,15 @@ public class Publisher {
     public static void main(final String[] argv) throws InterruptedException {
 
         final TopicCliArgs cliArgs = new TopicCliArgs();
-        cliArgs.parseArgs(argv);
+        try {
+            cliArgs.parseArgs(argv);
+        }
+        catch (MqttException e) {
+            return;
+        }
 
-        final String mqtt_hostname = MqttUtils.getMqttHostname(cliArgs.mqtt_arg);
-        final int mqtt_port = MqttUtils.getMqttPort(cliArgs.mqtt_arg);
+        final String mqtt_hostname = Utils.getMqttHostname(cliArgs.mqtt_arg);
+        final int mqtt_port = Utils.getMqttPort(cliArgs.mqtt_arg);
 
         final MqttCallback callback = new BaseMqttCallback() {
             @Override
@@ -26,7 +31,7 @@ public class Publisher {
             }
         };
 
-        final MqttClient client = MqttUtils.createMqttClient(mqtt_hostname, mqtt_port, callback);
+        final MqttClient client = Utils.createMqttClient(mqtt_hostname, mqtt_port, callback);
         if (client != null) {
             try {
                 for (int i = 0; i < 1000; i++) {
