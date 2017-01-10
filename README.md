@@ -8,7 +8,7 @@ with *mqtt_intro/python* as the root directory.
 * When creating a new new project with [IntelliJ](https://www.jetbrains.com/idea/), open it 
 with *mqtt_intro/java* as the root directory. 
 
-## MQTT Installation 
+## MQTT Broker Installation 
 
 ### OSX
 
