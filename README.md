@@ -2,11 +2,11 @@
 
 ## IDE Usage
 
-* When creating a new project with [PyCharm](https://www.jetbrains.com/pycharm/), open the
-project with mqtt_intro/python as the root directory. 
+* When creating a new project with [PyCharm](https://www.jetbrains.com/pycharm/), open it
+with *mqtt_intro/python* as the root directory. 
 
-* When creating a new new project with [IntelliJ](https://www.jetbrains.com/idea/), open the 
-project with mqtt_intro/java as the root directory. 
+* When creating a new new project with [IntelliJ](https://www.jetbrains.com/idea/), open it 
+with *mqtt_intro/java* as the root directory. 
 
 ## MQTT Installation 
 
