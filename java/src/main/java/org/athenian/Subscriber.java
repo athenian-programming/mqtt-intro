@@ -1,6 +1,6 @@
 package org.athenian;
 
-import org.athenian.args.TopicCliArgs;
+import org.athenian.args.TopicArgs;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -13,7 +13,7 @@ import static java.lang.String.format;
 public class Subscriber {
 
     public static void main(final String[] argv) throws InterruptedException {
-        final TopicCliArgs cliArgs = new TopicCliArgs();
+        final TopicArgs cliArgs = new TopicArgs();
         try {
             cliArgs.parseArgs(argv);
         }

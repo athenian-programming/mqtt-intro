@@ -28,9 +28,10 @@ def on_publish(client, userdata, mid):
 
 
 def publish_messages(client, userdata):
-    for i in range(0, 1000):
+    for i in range(int(userdata["count"])):
         result, mid = client.publish(userdata[TOPIC], payload=i.to_bytes(4, byteorder="big"))
         time.sleep(1)
+    userdata["client"].disconnect()
 
 
 if __name__ == "__main__":
@@ -38,6 +39,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--mqtt", required=True, help="MQTT server hostname")
     parser.add_argument("-t", "--topic", required=True, help="MQTT topic")
+    parser.add_argument("-c", "--count", default="1000", help="Number of messages to publish")
     args = vars(parser.parse_args())
 
     # Setup logging
@@ -47,10 +49,11 @@ if __name__ == "__main__":
     mqtt_hostname, mqtt_port = mqtt_server_info(args["mqtt"])
 
     # Create userdata dictionary
-    userdata = {TOPIC: args["topic"]}
+    userdata = {TOPIC: args["topic"], "count": args["count"]}
 
     # Initialize MQTT client
     client = paho.Client(userdata=userdata)
+    userdata["client"] = client
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
     client.on_publish = on_publish

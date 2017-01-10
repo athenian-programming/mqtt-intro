@@ -1,6 +1,6 @@
 package org.athenian;
 
-import org.athenian.args.TopicCliArgs;
+import org.athenian.args.CountArgs;
 import org.eclipse.paho.client.mqttv3.*;
 
 import java.nio.ByteBuffer;
@@ -11,7 +11,7 @@ public class Publisher {
 
     public static void main(final String[] argv) throws InterruptedException {
 
-        final TopicCliArgs cliArgs = new TopicCliArgs();
+        final CountArgs cliArgs = new CountArgs();
         try {
             cliArgs.parseArgs(argv);
         }
@@ -34,7 +34,7 @@ public class Publisher {
         final MqttClient client = Utils.createMqttClient(mqtt_hostname, mqtt_port, callback);
         if (client != null) {
             try {
-                for (int i = 0; i < 1000; i++) {
+                for (int i = 0; i < cliArgs.mqtt_count; i++) {
                     client.publish(cliArgs.mqtt_topic, new MqttMessage(ByteBuffer.allocate(4).putInt(i).array()));
                     Thread.sleep(1000);
                 }

@@ -5,17 +5,24 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class ServerCliArgs {
+public class ServerArgs {
     @Parameter(names = {"-m", "--mqtt"}, required = true, description = "MQTT server hostname")
     public String mqtt_arg;
+    @Parameter(names = {"-h", "--help"}, help = true)
+    private boolean help = false;
 
     public void parseArgs(final String[] argv) throws MqttException {
         try {
-            new JCommander(this, argv);
+            final JCommander jcom = new JCommander(this, argv);
+            if (this.help) {
+                jcom.usage();
+                System.exit(1);
+            }
+
         }
         catch (ParameterException e) {
             System.out.println(e.getMessage());
-            throw new MqttException(e);
+            System.exit(1);
         }
     }
 }
