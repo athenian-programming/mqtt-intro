@@ -22,7 +22,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 
 def on_message(client, userdata, msg):
-    print("{0} {1}".format(msg.topic, msg.payload))
+    print("{0} : {1}".format(msg.topic, msg.payload))
 
 
 if __name__ == "__main__":
