@@ -35,7 +35,7 @@ $ sudo apt-get install mosquitto
 $ sudo apt-get install mosquitto-clients
 ```
 
-## Testing from CLI
+## Testing MQTT Server from CLI
 
 ### Subscribe
 
