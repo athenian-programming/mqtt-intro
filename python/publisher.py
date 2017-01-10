@@ -9,9 +9,9 @@ from threading import Thread
 
 import paho.mqtt.client as paho
 
+from  utils import FORMAT_DEFAULT
+from  utils import TOPIC
 from  utils import mqtt_server_info
-
-TOPIC = "topic"
 
 
 def on_connect(client, userdata, flags, rc):
@@ -41,8 +41,7 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
 
     # Setup logging
-    logging.basicConfig(stream=sys.stderr, level=logging.INFO,
-                        format="%(asctime)s %(name)-10s %(funcName)-10s():%(lineno)i: %(levelname)-6s %(message)s")
+    logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
 
     # Determine MQTT server details
     mqtt_hostname, mqtt_port = mqtt_server_info(args["mqtt"])
