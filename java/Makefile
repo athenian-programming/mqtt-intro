@@ -3,6 +3,9 @@ default: build
 build:
 	mvn -DskipTests=true clean package
 
+clean:
+	mvn clean
+
 tree:
 	mvn dependency:tree
 
@@ -12,6 +15,4 @@ jarcheck:
 plugincheck:
 	mvn versions:display-plugin-updates
 
-versioncheck:
-	mvn versions:display-dependency-updates versions:display-plugin-updates
-
+versioncheck: jarcheck plugincheck

@@ -8,6 +8,16 @@
     <artifactId>intro</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <prerequisites>
+        <maven>3.0</maven>
+    </prerequisites>
+
+    <properties>
+        <compiler.version>3.6.0</compiler.version>
+        <assembly.version>2.6</assembly.version>
+        <really.version>1.2.0</really.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.eclipse.paho</groupId>
@@ -28,34 +38,58 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.version}</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>org.athenian.SysWatcher</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
+                <version>${assembly.version}</version>
                 <executions>
                     <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
+                        <id>syswatcher</id>
                         <goals>
-                            <goal>single</goal>
+                            <goal>attached</goal>
                         </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <finalName>syswatcher</finalName>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.athenian.SysWatcher</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
                     </execution>
+
+                    <execution>
+                        <id>publisher</id>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <finalName>publisher</finalName>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.athenian.Publisher</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 
