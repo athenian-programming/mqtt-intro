@@ -24,7 +24,7 @@ def on_disconnect(client, userdata, rc):
 
 
 def on_publish(client, userdata, mid):
-    print("Published with message id: {0}".format(mid))
+    print("Published value to {0} with message id {1}".format(userdata[TOPIC], mid))
 
 
 def publish_messages(client, userdata):

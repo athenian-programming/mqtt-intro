@@ -1,4 +1,4 @@
-package org.athenian;
+package org.athenian.args;
 
 import com.beust.jcommander.Parameter;
 

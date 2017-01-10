@@ -87,6 +87,25 @@
                         </configuration>
                     </execution>
 
+                    <execution>
+                        <id>subscriber</id>
+                        <goals>
+                            <goal>attached</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <finalName>publisher</finalName>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.athenian.Subscriber</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+
                 </executions>
             </plugin>
 
