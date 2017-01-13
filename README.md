@@ -2,10 +2,10 @@
 
 ## IDE Usage
 
-* When creating a new project with [PyCharm](https://www.jetbrains.com/pycharm/), open it
+* To use [PyCharm](https://www.jetbrains.com/pycharm/) with this repo, open a new project
 with *mqtt_intro/python* as the root directory. 
 
-* When creating a new new project with [IntelliJ](https://www.jetbrains.com/idea/), open it 
+* To use [IntelliJ](https://www.jetbrains.com/idea/) with this repo, open a new project
 with *mqtt_intro/java* as the root directory. 
 
 ## MQTT Broker Installation 
