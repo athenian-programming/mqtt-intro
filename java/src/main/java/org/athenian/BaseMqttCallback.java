@@ -5,17 +5,22 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class BaseMqttCallback implements MqttCallback {
-    public void connectionLost(Throwable throwable) {
-        System.out.println("Connection to MQTT server lost");
-    }
 
-    public void messageArrived(String topic, MqttMessage msg) throws Exception {
-        // Empty
-    }
+  @Override
+  public void connectionLost(Throwable throwable) {
+    System.out.println("Connection to MQTT server lost");
+  }
 
-    public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        // Empty
-    }
+
+  @Override
+  public void messageArrived(String topic, MqttMessage msg) throws Exception {
+    // Empty
+  }
+
+  @Override
+  public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+    // Empty
+  }
 
 
 }
