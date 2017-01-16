@@ -11,3 +11,6 @@ uses byte arrays for message payloads.
 read/write byte arrays. 
 
 * Code in this module uses the [Paho Python MQTT client](https://pypi.python.org/pypi/paho-mqtt)
+```bash
+$ pip3 install paho-mqtt
+```
