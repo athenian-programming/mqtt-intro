@@ -6,7 +6,6 @@ import socket
 import sys
 
 import paho.mqtt.client as paho
-
 from  utils import FORMAT_DEFAULT
 from  utils import TOPIC
 from  utils import mqtt_server_info
@@ -23,6 +22,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
     print("{0} : {1}".format(msg.topic, int.from_bytes(msg.payload, byteorder="big")))
+    # If i is a string, use: bytes.decode(msg.payload):
 
 
 if __name__ == "__main__":
