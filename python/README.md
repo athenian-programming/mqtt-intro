@@ -4,6 +4,12 @@
 
 ## OSX
 
+Python 2
+```bash
+$ pip install paho-mqtt
+```
+
+Python 3
 ```bash
 $ pip3 install paho-mqtt
 ```
