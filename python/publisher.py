@@ -11,7 +11,9 @@ import paho.mqtt.client as paho
 
 from  utils import FORMAT_DEFAULT
 from  utils import TOPIC
-from  utils import mqtt_server_info
+from  utils import mqtt_broker_info
+
+CLIENT = "client"
 
 
 def on_connect(client, userdata, flags, rc):
@@ -32,7 +34,7 @@ def publish_messages(client, userdata):
         result, mid = client.publish(userdata[TOPIC], payload=val.to_bytes(4, byteorder="big"))
         # If i is a string, use: val.encode('utf-8'):
         time.sleep(1)
-    userdata["client"].disconnect()
+    userdata[CLIENT].disconnect()
 
 
 if __name__ == "__main__":
@@ -46,26 +48,30 @@ if __name__ == "__main__":
     # Setup logging
     logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
 
-    # Determine MQTT server details
-    mqtt_hostname, mqtt_port = mqtt_server_info(args["mqtt"])
+    # Determine MQTT broker details
+    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
 
     # Create userdata dictionary
     userdata = {TOPIC: args["topic"], "count": args["count"]}
 
     # Initialize MQTT client
     client = paho.Client(userdata=userdata)
-    userdata["client"] = client
+
+    # Add client to userdata
+    userdata[CLIENT] = client
+
+    # Setup callbacks
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
     client.on_publish = on_publish
 
     try:
-        # Connect to MQTT server
-        logging.info("Connecting to MQTT server at {0}:{1}...".format(mqtt_hostname, mqtt_port))
+        # Connect to MQTT broker
+        logging.info("Connecting to MQTT broker at {0}:{1}...".format(mqtt_hostname, mqtt_port))
         client.connect(mqtt_hostname, port=mqtt_port, keepalive=60)
         client.loop_forever()
     except socket.error:
-        logging.error("Cannot connect to MQTT server at: {0}:{1}".format(mqtt_hostname, mqtt_port))
+        logging.error("Cannot connect to MQTT broker at: {0}:{1}".format(mqtt_hostname, mqtt_port))
     except KeyboardInterrupt:
         pass
 

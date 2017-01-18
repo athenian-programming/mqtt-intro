@@ -8,11 +8,12 @@ import sys
 import paho.mqtt.client as paho
 
 from  utils import FORMAT_DEFAULT
-from  utils import mqtt_server_info
+from  utils import mqtt_broker_info
 
 
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code: {0}".format(rc))
+    # Subscribe to internal broker messages
     client.subscribe("$SYS/#")
 
 
@@ -33,22 +34,24 @@ if __name__ == "__main__":
     # Setup logging
     logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
 
-    # Determine MQTT server details
-    mqtt_hostname, mqtt_port = mqtt_server_info(args["mqtt"])
+    # Determine MQTT broker details
+    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
 
     # Initialize MQTT client
     client = paho.Client()
+
+    # Setup callbacks
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
     client.on_message = on_message
 
     try:
-        # Connect to MQTT server
-        logging.info("Connecting to MQTT server at {0}:{1}...".format(mqtt_hostname, mqtt_port))
+        # Connect to MQTT broker
+        logging.info("Connecting to MQTT broker at {0}:{1}...".format(mqtt_hostname, mqtt_port))
         client.connect(mqtt_hostname, port=mqtt_port, keepalive=60)
         client.loop_forever()
     except socket.error:
-        logging.error("Cannot connect to MQTT server at: {0}:{1}".format(mqtt_hostname, mqtt_port))
+        logging.error("Cannot connect to MQTT broker at: {0}:{1}".format(mqtt_hostname, mqtt_port))
     except KeyboardInterrupt:
         pass
 
