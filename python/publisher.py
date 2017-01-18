@@ -8,6 +8,7 @@ import time
 from threading import Thread
 
 import paho.mqtt.client as paho
+
 from  utils import FORMAT_DEFAULT
 from  utils import TOPIC
 from  utils import mqtt_server_info
@@ -37,7 +38,7 @@ def publish_messages(client, userdata):
 if __name__ == "__main__":
     # Parse CLI args
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--mqtt", required=True, help="MQTT server hostname")
+    parser.add_argument("-m", "--mqtt", required=True, help="MQTT broker hostname")
     parser.add_argument("-t", "--topic", required=True, help="MQTT topic")
     parser.add_argument("-c", "--count", default="1000", help="Number of messages to publish")
     args = vars(parser.parse_args())

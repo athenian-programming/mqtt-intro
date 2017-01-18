@@ -27,7 +27,7 @@ def on_message(client, userdata, msg):
 if __name__ == "__main__":
     # Parse CLI args
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--mqtt", required=True, help="MQTT server hostname")
+    parser.add_argument("-m", "--mqtt", required=True, help="MQTT broker hostname")
     args = vars(parser.parse_args())
 
     # Setup logging

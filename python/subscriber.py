@@ -6,6 +6,7 @@ import socket
 import sys
 
 import paho.mqtt.client as paho
+
 from  utils import FORMAT_DEFAULT
 from  utils import TOPIC
 from  utils import mqtt_server_info
@@ -28,7 +29,7 @@ def on_message(client, userdata, msg):
 if __name__ == "__main__":
     # Parse CLI args
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--mqtt", required=True, help="MQTT server hostname")
+    parser.add_argument("-m", "--mqtt", required=True, help="MQTT broker hostname")
     parser.add_argument("-t", "--topic", required=True, help="MQTT topic")
     args = vars(parser.parse_args())
 
