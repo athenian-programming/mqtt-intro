@@ -23,14 +23,14 @@ public class Utils {
                                                      new MemoryPersistence());
             if (callback != null)
                 client.setCallback(callback);
-            System.out.println(String.format("Connecting to MQTT server at %s:%d...", mqtt_hostname, mqtt_port));
+            System.out.println(String.format("Connecting to MQTT broker at %s:%d...", mqtt_hostname, mqtt_port));
             client.connect();
             System.out.println(String.format("Connected to %s:%d", mqtt_hostname, mqtt_port));
             return client;
         }
         catch (MqttException e) {
             e.printStackTrace();
-            System.out.println(String.format("Cannot connect to MQTT server at: %s:%d [%s]",
+            System.out.println(String.format("Cannot connect to MQTT broker at: %s:%d [%s]",
                                              mqtt_hostname, mqtt_port, e.getMessage()));
             return null;
         }

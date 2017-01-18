@@ -1,6 +1,6 @@
 package org.athenian;
 
-import org.athenian.args.ServerArgs;
+import org.athenian.args.BrokerArgs;
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -12,7 +12,7 @@ public class SysWatcher {
 
     public static void main(final String[] argv) {
 
-        final ServerArgs cliArgs = new ServerArgs();
+        final BrokerArgs cliArgs = new BrokerArgs();
         try {
             cliArgs.parseArgs(SysWatcher.class.getName(), argv);
         }

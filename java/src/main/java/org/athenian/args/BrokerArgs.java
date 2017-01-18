@@ -5,8 +5,8 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
-public class ServerArgs {
-    @Parameter(names = {"-m", "--mqtt"}, required = true, description = "MQTT server hostname")
+public class BrokerArgs {
+    @Parameter(names = {"-m", "--mqtt"}, required = true, description = "MQTT broker hostname")
     public String mqtt_arg;
     @Parameter(names = {"-h", "--help"}, help = true)
     private boolean help = false;
