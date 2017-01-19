@@ -39,25 +39,21 @@ def publish_command(cmd):
 
 
 def on_left_arrow_pressed(event):
-    # print("Left arrow pressed")
     label["text"] = LEFT
     publish_command(LEFT)
 
 
 def on_right_arrow_pressed(event):
-    # print("Right arrow pressed")
     label["text"] = RIGHT
     publish_command(RIGHT)
 
 
 def on_up_arrow_pressed(event):
-    # print("Up arrow pressed")
     label["text"] = FORWARD
     publish_command(FORWARD)
 
 
 def on_down_arrow_pressed(event):
-    # print("Down arrow pressed")
     label["text"] = BACKWARD
     publish_command(BACKWARD)
 
