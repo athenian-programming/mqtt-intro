@@ -2,7 +2,6 @@
 
 import argparse
 import logging
-import socket
 import sys
 
 from mqtt_connection import MqttConnection
@@ -68,25 +67,6 @@ def key(event):
 def on_mouseclick(event):
     root.focus_set()
     label["text"] = "Clicked at {0},{1}".format(event.x, event.y)
-
-
-def connect_to_mqtt(client, args):
-    # Setup MQTT callbacks
-    client.on_connect = on_connect
-    client.on_disconnect = on_disconnect
-    client.on_publish = on_publish
-
-    # Determine MQTT broker details
-    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
-
-    try:
-        # Connect to MQTT broker
-        logging.info("Connecting to MQTT broker at {0}:{1}...".format(mqtt_hostname, mqtt_port))
-        client.connect(mqtt_hostname, port=mqtt_port, keepalive=60)
-        client.loop_forever()
-    except socket.error:
-        logging.error("Cannot connect to MQTT broker at: {0}:{1}".format(mqtt_hostname, mqtt_port))
-        exit()
 
 
 if __name__ == "__main__":
