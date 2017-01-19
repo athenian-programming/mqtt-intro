@@ -34,23 +34,23 @@ def publish_command(cmd):
     result, mid = client.publish(COMMAND, payload=cmd.encode('utf-8'))
 
 
-def left_key(event):
-    print("Left arrow pressed")
+def on_left_arrow_pressed(event):
+    # print("Left arrow pressed")
     publish_command("LEFT")
 
 
-def right_key(event):
-    print("Right arrow pressed")
+def on_right_arrow_pressed(event):
+    # print("Right arrow pressed")
     publish_command("RIGHT")
 
 
-def up_key(event):
-    print("Up arrow pressed")
+def on_up_arrow_pressed(event):
+    # print("Up arrow pressed")
     publish_command("UP")
 
 
-def down_key(event):
-    print("Down arrow pressed")
+def on_down_arrow_pressed(event):
+    # print("Down arrow pressed")
     publish_command("DOWN")
 
 
@@ -59,16 +59,19 @@ def key(event):
     print("pressed " + key_clicked)
 
 
-def callback(event):
+def on_mouseclick(event):
     canvas.focus_set()
     print("clicked at", event.x, event.y)
 
 
-def connect_to_mqtt(client):
+def connect_to_mqtt(client, args):
     # Setup MQTT callbacks
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
     client.on_publish = on_publish
+
+    # Determine MQTT broker details
+    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
 
     try:
         # Connect to MQTT broker
@@ -89,27 +92,24 @@ if __name__ == "__main__":
     # Setup logging
     logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
 
-    # Determine MQTT broker details
-    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
-
     connected = False
 
     # Initialize MQTT client
     client = paho.Client()
 
     # Connect to MQTT in a thread
-    Thread(target=connect_to_mqtt, args=(client,)).start()
+    Thread(target=connect_to_mqtt, args=(client, args)).start()
 
     root = tk.Tk()
     canvas = tk.Canvas(root, bg="white", width=200, height=300)
 
     # For bind() details, see: http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
+    canvas.bind("<Button-1>", on_mouseclick)
     canvas.bind("<Key>", key)
-    canvas.bind("<Button-1>", callback)
-    canvas.bind('<Left>', left_key)
-    canvas.bind('<Right>', right_key)
-    canvas.bind('<Up>', up_key)
-    canvas.bind('<Down>', down_key)
+    canvas.bind('<Left>', on_left_arrow_pressed)
+    canvas.bind('<Right>', on_right_arrow_pressed)
+    canvas.bind('<Up>', on_up_arrow_pressed)
+    canvas.bind('<Down>', on_down_arrow_pressed)
     canvas.pack()
 
     root.mainloop()
