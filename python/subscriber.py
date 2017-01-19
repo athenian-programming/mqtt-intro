@@ -51,11 +51,11 @@ if __name__ == "__main__":
 
     try:
         # Connect to MQTT broker
-        logging.info("Connecting to MQTT broker at {0}:{1}...".format(mqtt_hostname, mqtt_port))
+        logging.info("Connecting to MQTT broker {0}:{1}...".format(mqtt_hostname, mqtt_port))
         client.connect(mqtt_hostname, port=mqtt_port, keepalive=60)
         client.loop_forever()
     except socket.error:
-        logging.error("Cannot connect to MQTT broker at: {0}:{1}".format(mqtt_hostname, mqtt_port))
+        logging.error("Cannot connect to MQTT broker {0}:{1}".format(mqtt_hostname, mqtt_port))
     except KeyboardInterrupt:
         pass
 
