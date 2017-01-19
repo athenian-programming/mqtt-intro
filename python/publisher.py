@@ -9,9 +9,9 @@ from threading import Thread
 
 import paho.mqtt.client as paho
 
-from  utils import FORMAT_DEFAULT
-from  utils import TOPIC
-from  utils import mqtt_broker_info
+from utils import FORMAT_DEFAULT
+from utils import TOPIC
+from utils import mqtt_broker_info
 
 CLIENT = "client"
 

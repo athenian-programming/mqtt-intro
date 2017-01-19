@@ -7,9 +7,9 @@ import sys
 
 import paho.mqtt.client as paho
 
-from  utils import FORMAT_DEFAULT
-from  utils import TOPIC
-from  utils import mqtt_broker_info
+from utils import FORMAT_DEFAULT
+from utils import TOPIC
+from utils import mqtt_broker_info
 
 
 def on_connect(client, userdata, flags, rc):
