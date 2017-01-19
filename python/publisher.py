@@ -60,7 +60,7 @@ if __name__ == "__main__":
     # Add client to userdata
     userdata[CLIENT] = client
 
-    # Setup callbacks
+    # Setup MQTT callbacks
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
     client.on_publish = on_publish

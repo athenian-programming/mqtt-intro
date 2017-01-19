@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # Initialize MQTT client
     client = paho.Client()
 
-    # Setup callbacks
+    # Setup MQTT callbacks
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
     client.on_message = on_message
