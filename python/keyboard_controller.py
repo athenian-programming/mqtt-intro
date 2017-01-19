@@ -44,12 +44,12 @@ def on_right_arrow_pressed(event):
 
 def on_up_arrow_pressed(event):
     # print("Up arrow pressed")
-    publish_command("UP")
+    publish_command("FORWARD")
 
 
 def on_down_arrow_pressed(event):
     # print("Down arrow pressed")
-    publish_command("DOWN")
+    publish_command("BACKWARD")
 
 
 def key(event):
