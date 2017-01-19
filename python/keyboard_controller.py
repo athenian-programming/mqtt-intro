@@ -16,6 +16,10 @@ else:
     import Tkinter as tk
 
 COMMAND = "/roborio/keyboard/command"
+LEFT = "LEFT"
+RIGHT = "RIGHT"
+FORWARD = "FORWARD"
+BACKWARD = "BACKWARD"
 
 
 def on_connect(client, userdata, flags, rc):
@@ -36,32 +40,38 @@ def publish_command(cmd):
 
 def on_left_arrow_pressed(event):
     # print("Left arrow pressed")
-    publish_command("LEFT")
+    label["text"] = LEFT
+    publish_command(LEFT)
 
 
 def on_right_arrow_pressed(event):
     # print("Right arrow pressed")
-    publish_command("RIGHT")
+    label["text"] = RIGHT
+    publish_command(RIGHT)
 
 
 def on_up_arrow_pressed(event):
     # print("Up arrow pressed")
-    publish_command("FORWARD")
+    label["text"] = FORWARD
+    publish_command(FORWARD)
 
 
 def on_down_arrow_pressed(event):
     # print("Down arrow pressed")
-    publish_command("BACKWARD")
+    label["text"] = BACKWARD
+    publish_command(BACKWARD)
 
 
 def key(event):
     key_clicked = repr(event.char)
-    print("pressed " + key_clicked)
+    label["text"] = "Pressed {0}".format(key_clicked)
+    if key_clicked == "'q'":
+        sys.exit()
 
 
 def on_mouseclick(event):
-    canvas.focus_set()
-    print("clicked at", event.x, event.y)
+    root.focus_set()
+    label["text"] = "Clicked at {0},{1}".format(event.x, event.y)
 
 
 def connect_to_mqtt(client, args):
@@ -92,10 +102,8 @@ if __name__ == "__main__":
     # Setup logging
     logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
 
-    # Determine MQTT broker details
-    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
-
-    mqtt_conn = MqttConnection(mqtt_hostname, mqtt_port)
+    # Create MQTT connection
+    mqtt_conn = MqttConnection(*mqtt_broker_info(args["mqtt"]))
 
     # Setup MQTT callbacks
     mqtt_conn.client.on_connect = on_connect
@@ -106,20 +114,22 @@ if __name__ == "__main__":
     mqtt_conn.connect()
 
     root = tk.Tk()
-    canvas = tk.Canvas(root, bg="white", width=200, height=150)
-
-    # label = tk.Label(canvas, text='Hello bind world')
-    # label.config(bg='red', font=('courier', 20, 'bold'))
-    # label.config(height=5, width=20)
-    # label.pack(expand=tk.YES, fill=tk.BOTH)
-
     # For bind() details, see: http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
-    canvas.bind("<Button-1>", on_mouseclick)
-    canvas.bind("<Key>", key)
-    canvas.bind('<Left>', on_left_arrow_pressed)
-    canvas.bind('<Right>', on_right_arrow_pressed)
-    canvas.bind('<Up>', on_up_arrow_pressed)
-    canvas.bind('<Down>', on_down_arrow_pressed)
+    root.bind("<Button-1>", on_mouseclick)
+    root.bind("<Key>", key)
+    root.bind('<Left>', on_left_arrow_pressed)
+    root.bind('<Right>', on_right_arrow_pressed)
+    root.bind('<Up>', on_up_arrow_pressed)
+    root.bind('<Down>', on_down_arrow_pressed)
+
+    canvas = tk.Canvas(root, bg="white", width=200, height=150)
+    label = tk.Label(canvas,
+                     text='',
+                     bg='red',
+                     font=('courier', 20, 'bold'),
+                     height=5,
+                     width=20)
+    label.pack(expand=tk.YES, fill=tk.BOTH)
     canvas.pack()
 
     root.mainloop()

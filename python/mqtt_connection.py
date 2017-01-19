@@ -1,5 +1,6 @@
 import logging
 import socket
+import sys
 from threading import Thread
 
 import paho.mqtt.client as paho
@@ -25,6 +26,7 @@ class MqttConnection:
                 self.__client.loop_forever()
             except socket.error:
                 logging.error("Cannot connect to MQTT broker at: {0}:{1}".format(self.__hostname, self.__port))
-                exit()
+                sys.exit()
 
+        # Run connection in a thread
         Thread(target=connect_to_mqtt, args=()).start()
