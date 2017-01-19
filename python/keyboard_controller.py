@@ -2,10 +2,8 @@ import argparse
 import logging
 import socket
 import sys
-from threading import Thread
 
-import paho.mqtt.client as paho
-
+from mqtt_connection import MqttConnection
 from utils import FORMAT_DEFAULT
 from utils import is_python3
 from utils import mqtt_broker_info
@@ -31,7 +29,7 @@ def on_publish(client, userdata, mid):
 
 
 def publish_command(cmd):
-    result, mid = client.publish(COMMAND, payload=cmd.encode('utf-8'))
+    result, mid = mqtt_conn.client.publish(COMMAND, payload=cmd.encode('utf-8'))
 
 
 def on_left_arrow_pressed(event):
@@ -92,16 +90,26 @@ if __name__ == "__main__":
     # Setup logging
     logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
 
-    connected = False
+    # Determine MQTT broker details
+    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
 
-    # Initialize MQTT client
-    client = paho.Client()
+    mqtt_conn = MqttConnection(mqtt_hostname, mqtt_port)
 
-    # Connect to MQTT in a thread
-    Thread(target=connect_to_mqtt, args=(client, args)).start()
+    # Setup MQTT callbacks
+    mqtt_conn.client.on_connect = on_connect
+    mqtt_conn.client.on_disconnect = on_disconnect
+    mqtt_conn.client.on_publish = on_publish
+
+    # This will not block
+    mqtt_conn.connect()
 
     root = tk.Tk()
-    canvas = tk.Canvas(root, bg="white", width=200, height=300)
+    canvas = tk.Canvas(root, bg="white", width=200, height=150)
+
+    # label = tk.Label(canvas, text='Hello bind world')
+    # label.config(bg='red', font=('courier', 20, 'bold'))
+    # label.config(height=5, width=20)
+    # label.pack(expand=tk.YES, fill=tk.BOTH)
 
     # For bind() details, see: http://effbot.org/tkinterbook/tkinter-events-and-bindings.htm
     canvas.bind("<Button-1>", on_mouseclick)
