@@ -36,9 +36,6 @@ if __name__ == "__main__":
     # Setup logging
     logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
 
-    # Determine MQTT broker details
-    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
-
     # Create userdata dictionary
     userdata = {TOPIC: args["topic"]}
 
@@ -48,6 +45,9 @@ if __name__ == "__main__":
     # Setup MQTT callbacks
     client.on_connect = on_connect
     client.on_message = on_message
+
+    # Determine MQTT broker details
+    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
 
     try:
         # Connect to MQTT broker
