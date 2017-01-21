@@ -8,9 +8,9 @@ from threading import Thread
 
 import paho.mqtt.client as paho
 
-from utils import LOGGING_ARGS
-from utils import TOPIC
-from utils import mqtt_broker_info
+from ...common_robotics_python.utils import LOGGING_ARGS
+from ...common_robotics_python.utils import TOPIC
+from ...common_robotics_python.utils import mqtt_broker_info
 
 CLIENT = "client"
 
