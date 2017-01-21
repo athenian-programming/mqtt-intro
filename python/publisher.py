@@ -3,13 +3,12 @@
 import argparse
 import logging
 import socket
-import sys
 import time
 from threading import Thread
 
 import paho.mqtt.client as paho
 
-from utils import FORMAT_DEFAULT
+from utils import LOGGING_ARGS
 from utils import TOPIC
 from utils import mqtt_broker_info
 
@@ -46,7 +45,7 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
 
     # Setup logging
-    logging.basicConfig(stream=sys.stderr, level=logging.INFO, format=FORMAT_DEFAULT)
+    logging.basicConfig(**LOGGING_ARGS)
 
     # Create userdata dictionary
     userdata = {TOPIC: args["topic"], "count": args["count"]}
