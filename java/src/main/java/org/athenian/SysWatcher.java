@@ -29,9 +29,10 @@ public class SysWatcher {
           client.subscribe("$SYS/#",
                            0,
                            new IMqttMessageListener() {
+                               @Override
                                public void messageArrived(String topic, MqttMessage msg) {
                                    System.out.println(format("%s : %s", topic, new String(msg.getPayload())));
-                           }
+                               }
                          });
       }
       catch (MqttException e) {

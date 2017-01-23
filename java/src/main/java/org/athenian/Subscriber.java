@@ -31,8 +31,9 @@ public class Subscriber {
                                  new IMqttMessageListener() {
                                      @Override
                                      public void messageArrived(String topic, MqttMessage msg) throws Exception {
-                                         System.out.println(format("%s : %d",
-                                                                   topic, ByteBuffer.wrap(msg.getPayload()).getInt()));
+                                         // If writing a String, use new String(msg.getPayload())
+                                         final int val = ByteBuffer.wrap(msg.getPayload()).getInt();
+                                         System.out.println(format("%s : %d", topic, val));
                                      }
                                  });
             }
