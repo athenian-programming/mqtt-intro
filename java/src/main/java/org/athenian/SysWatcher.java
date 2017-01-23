@@ -26,15 +26,11 @@ public class SysWatcher {
     final MqttClient client = Utils.createMqttClient(mqtt_hostname, mqtt_port, new BaseMqttCallback());
     if (client != null) {
       try {
-        client.subscribe("roborio/#",
-                         0,
-                         new IMqttMessageListener() {
-                           @Override
-                           public void messageArrived(String topic, MqttMessage msg)
-                               throws MqttException {
-                             String val = new String(msg.getPayload());
-                             System.out.println(format("The value of roborio is %s : %s", topic, val));
-                             client.publish("logging", new MqttMessage(msg.getPayload()));
+          client.subscribe("$SYS/#",
+                           0,
+                           new IMqttMessageListener() {
+                               public void messageArrived(String topic, MqttMessage msg) {
+                                   System.out.println(format("%s : %s", topic, new String(msg.getPayload())));
                            }
                          });
       }
