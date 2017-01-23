@@ -1,6 +1,12 @@
 # Python MQTT Intro
 
-Python client installation instructions are [here](http://www.athenian-robotics.org/mqtt-client/)
+## Package Dependencies
+
+Install the following Python packages: 
+
+* [MQTT](http://mqtt.org) client 
+as described [here](http://www.athenian-robotics.org/mqtt-client/)
+
 
 ## Notes 
 
