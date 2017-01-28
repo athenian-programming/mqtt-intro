@@ -30,9 +30,9 @@ def on_publish(client, userdata, mid):
 def publish_messages(client, userdata):
     for val in range(int(userdata["count"])):
         # Write a string byte array
-        payload = str(val).encode('utf-8')
-        result, mid = client.publish(userdata[TOPIC], payload=payload, qos=0)
-        # To write an int byte array, use: val.to_bytes(4, byteorder="big"):
+        bval = str(val).encode('utf-8')
+        result, mid = client.publish(userdata[TOPIC], payload=bval, qos=0)
+        # To write an int byte array, use: bval = val.to_bytes(4, byteorder="big"):
         time.sleep(1)
     userdata[CLIENT].disconnect()
 

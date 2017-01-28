@@ -35,9 +35,11 @@ public class Publisher {
         if (client != null) {
             try {
                 for (int i = 0; i < cliArgs.mqtt_count; i++) {
-                    // If writing a String, use str.getBytes()
-                    final byte[] bval = ByteBuffer.allocate(4).putInt(i).array();
+                    // Write a string byte array
+                    final byte[] bval = (""+i).getBytes();
                     client.publish(cliArgs.mqtt_topic, new MqttMessage(bval));
+                    // If writing a int, use
+                    // final byte[] bval = ByteBuffer.allocate(4).putInt(i).array();
                     Thread.sleep(1000);
                 }
             }
