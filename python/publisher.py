@@ -7,7 +7,6 @@ import time
 from threading import Thread
 
 import paho.mqtt.client as paho
-
 from common_constants import LOGGING_ARGS
 from common_constants import TOPIC
 from common_utils import mqtt_broker_info
@@ -30,8 +29,10 @@ def on_publish(client, userdata, mid):
 
 def publish_messages(client, userdata):
     for val in range(int(userdata["count"])):
-        result, mid = client.publish(userdata[TOPIC], payload=val.to_bytes(4, byteorder="big"))
-        # If i is a string, use: val.encode('utf-8'):
+        # Write a string byte array
+        payload = str(val).encode('utf-8')
+        result, mid = client.publish(userdata[TOPIC], payload=payload, qos=0)
+        # To write an int byte array, use: val.to_bytes(4, byteorder="big"):
         time.sleep(1)
     userdata[CLIENT].disconnect()
 

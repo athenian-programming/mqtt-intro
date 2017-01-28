@@ -5,7 +5,6 @@ import logging
 import socket
 
 import paho.mqtt.client as paho
-
 from common_constants import LOGGING_ARGS
 from common_constants import TOPIC
 from common_utils import mqtt_broker_info
@@ -21,8 +20,10 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 
 def on_message(client, userdata, msg):
-    print("{0} : {1}".format(msg.topic, int.from_bytes(msg.payload, byteorder="big")))
-    # If i is a string, use: bytes.decode(msg.payload):
+    # Payload is a string byte array
+    val = bytes.decode(msg.payload)
+    print("{0} : {1}".format(msg.topic, val))
+    # If payload is an int byte array, use: int.from_bytes(msg.payload, byteorder="big"))
 
 
 if __name__ == "__main__":
