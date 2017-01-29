@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import argparse
 import logging
@@ -33,6 +33,7 @@ def publish_messages(client, userdata):
         bval = str(val).encode('utf-8')
         result, mid = client.publish(userdata[TOPIC], payload=bval, qos=0)
         # To write an int byte array, use: bval = val.to_bytes(4, byteorder="big"):
+        # int.to_bytes() requires python3: https://docs.python.org/3/library/stdtypes.html#int.to_bytes
         time.sleep(1)
     userdata[CLIENT].disconnect()
 

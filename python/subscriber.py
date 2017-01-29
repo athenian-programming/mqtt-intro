@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import argparse
 import logging
@@ -24,7 +24,7 @@ def on_message(client, userdata, msg):
     val = bytes.decode(msg.payload)
     print("{0} : {1}".format(msg.topic, val))
     # If payload is an int byte array, use: int.from_bytes(msg.payload, byteorder="big"))
-
+    # int.from_bytes() requires python3: https://docs.python.org/3/library/stdtypes.html#int.from_bytes
 
 if __name__ == "__main__":
     # Parse CLI args

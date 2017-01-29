@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import argparse
 import logging
 import socket
 
 import paho.mqtt.client as paho
-
 from common_constants import LOGGING_ARGS
 from common_utils import mqtt_broker_info
 
