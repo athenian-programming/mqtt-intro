@@ -12,7 +12,7 @@ from common_utils import mqtt_broker_info
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code: {0}".format(rc))
     # Subscribe to internal broker messages
-    client.subscribe("$SYS/#")
+    client.subscribe("#")
 
 
 def on_disconnect(client, userdata, rc):
@@ -52,5 +52,7 @@ if __name__ == "__main__":
         logging.error("Cannot connect to MQTT broker {0}:{1}".format(mqtt_hostname, mqtt_port))
     except KeyboardInterrupt:
         pass
+    finally:
+        client.disconnect()
 
     print("Exiting...")

@@ -58,5 +58,7 @@ if __name__ == "__main__":
         logging.error("Cannot connect to MQTT broker {0}:{1}".format(mqtt_hostname, mqtt_port))
     except KeyboardInterrupt:
         pass
+    finally:
+        client.disconnect()
 
     print("Exiting...")
