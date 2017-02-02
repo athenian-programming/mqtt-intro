@@ -12,7 +12,7 @@ from common_utils import mqtt_broker_info
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code: {0}".format(rc))
     # Subscribe to internal broker messages
-    client.subscribe("#")
+    client.subscribe("$SYS/#")
 
 
 def on_disconnect(client, userdata, rc):
