@@ -1,13 +1,10 @@
 #!/usr/bin/env python
 
 import argparse
-import logging
-import socket
 
-import paho.mqtt.client as paho
-from common_constants import LOGGING_ARGS
-from common_constants import TOPIC
-from common_utils import mqtt_broker_info
+from constants import TOPIC
+from mqtt_connection import MqttConnection
+from utils import setup_logging, sleep
 
 
 def on_connect(client, userdata, flags, rc):
@@ -34,31 +31,20 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
 
     # Setup logging
-    logging.basicConfig(**LOGGING_ARGS)
+    setup_logging()
 
-    # Create userdata dictionary
-    userdata = {TOPIC: args["topic"]}
-
-    # Initialize MQTT client
-    client = paho.Client(userdata=userdata)
-
-    # Setup MQTT callbacks
-    client.on_connect = on_connect
-    client.on_message = on_message
-
-    # Determine MQTT broker details
-    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
+    # Setup MQTT client
+    mqtt_conn = MqttConnection(args["mqtt"],
+                               userdata={TOPIC: args["topic"]},
+                               on_connect=on_connect,
+                               on_message=on_message)
+    mqtt_conn.connect()
 
     try:
-        # Connect to MQTT broker
-        logging.info("Connecting to MQTT broker {0}:{1}...".format(mqtt_hostname, mqtt_port))
-        client.connect(mqtt_hostname, port=mqtt_port, keepalive=60)
-        client.loop_forever()
-    except socket.error:
-        logging.error("Cannot connect to MQTT broker {0}:{1}".format(mqtt_hostname, mqtt_port))
+        sleep()
     except KeyboardInterrupt:
         pass
     finally:
-        client.disconnect()
+        mqtt_conn.disconnect()
 
     print("Exiting...")

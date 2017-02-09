@@ -1,17 +1,12 @@
 #!/usr/bin/env python
 
 import argparse
-import logging
-import socket
 import time
 from threading import Thread
 
-import paho.mqtt.client as paho
-from common_constants import LOGGING_ARGS
-from common_constants import TOPIC
-from common_utils import mqtt_broker_info
-
-CLIENT = "client"
+from constants import TOPIC
+from mqtt_connection import MqttConnection
+from utils import setup_logging, sleep
 
 
 def on_connect(client, userdata, flags, rc):
@@ -35,7 +30,7 @@ def publish_messages(client, userdata):
         # To write an int byte array, use: bval = val.to_bytes(4, byteorder="big"):
         # int.to_bytes() requires python3: https://docs.python.org/3/library/stdtypes.html#int.to_bytes
         time.sleep(1)
-    userdata[CLIENT].disconnect()
+    userdata["paho.client"].disconnect()
 
 
 if __name__ == "__main__":
@@ -47,35 +42,21 @@ if __name__ == "__main__":
     args = vars(parser.parse_args())
 
     # Setup logging
-    logging.basicConfig(**LOGGING_ARGS)
+    setup_logging()
 
-    # Create userdata dictionary
-    userdata = {TOPIC: args["topic"], "count": args["count"]}
-
-    # Initialize MQTT client
-    client = paho.Client(userdata=userdata)
-
-    # Add client to userdata
-    userdata[CLIENT] = client
-
-    # Setup MQTT callbacks
-    client.on_connect = on_connect
-    client.on_disconnect = on_disconnect
-    client.on_publish = on_publish
-
-    # Determine MQTT broker details
-    mqtt_hostname, mqtt_port = mqtt_broker_info(args["mqtt"])
+    # Setup MQTT client
+    mqtt_conn = MqttConnection(args["mqtt"],
+                               userdata={TOPIC: args["topic"], "count": args["count"]},
+                               on_connect=on_connect,
+                               on_disconnect=on_disconnect,
+                               on_publish=on_publish)
+    mqtt_conn.connect()
 
     try:
-        # Connect to MQTT broker
-        logging.info("Connecting to MQTT broker {0}:{1}...".format(mqtt_hostname, mqtt_port))
-        client.connect(mqtt_hostname, port=mqtt_port, keepalive=60)
-        client.loop_forever()
-    except socket.error:
-        logging.error("Cannot connect to MQTT broker {0}:{1}".format(mqtt_hostname, mqtt_port))
+        sleep()
     except KeyboardInterrupt:
         pass
     finally:
-        client.disconnect()
+        mqtt_conn.disconnect()
 
     print("Exiting...")
