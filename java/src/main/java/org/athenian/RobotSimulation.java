@@ -46,6 +46,7 @@ public class RobotSimulation {
         final AtomicInteger current_dist = new AtomicInteger();
         final AtomicLong dist_ts = new AtomicLong();
 
+        // The subscribe callbacks run into their own thread
         try {
             client.subscribe(CAMERA_TOPIC,
                              new IMqttMessageListener() {
@@ -79,6 +80,23 @@ public class RobotSimulation {
 
         final ExecutorService executorService = Executors.newFixedThreadPool(4);
         publishData(client, executorService);
+
+        /*
+        Non-lambda approach to starting a Runnable in a Thread:
+        executorService.submit(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        // Action of thread
+                    }
+                });
+
+        Lambda approach to starting a Runnable in a Thread:
+        executorService.submit(() -> {
+            // Action of thread
+        });
+        */
+
 
         // Run the robot actions in separate threads, one for location and one for distance
         executorService.submit(() -> {
