@@ -11,11 +11,9 @@ public class SynchronizationUsage {
         Synchronized instance methods
         Synchronized block in static methods
         Synchronized static methods
-    */
+     */
 
-    /*
-   Instance methods
-    */
+    /****** Static methods ******/
 
     // Synchronized block in static methods
     static void staticMethod() {
@@ -38,9 +36,7 @@ public class SynchronizationUsage {
         }
     }
 
-    /*
-    Static methods
-     */
+    /****** Instance methods ******/
 
     // Synchronized block in instance methods
     void instanceMethod() {
@@ -62,5 +58,4 @@ public class SynchronizationUsage {
             // Synchronized method actions
         }
     }
-
 }
