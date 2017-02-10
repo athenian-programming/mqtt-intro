@@ -80,7 +80,7 @@ public class RobotSimulation {
         final ExecutorService executorService = Executors.newFixedThreadPool(4);
         publishData(client, executorService);
 
-        // Run the robot actions in threads, one for location and one for distance
+        // Run the robot actions in separate threads, one for location and one for distance
         executorService.submit(() -> {
             long last_read = 0;
             while (true) {
@@ -104,7 +104,7 @@ public class RobotSimulation {
                 final int dist;
                 synchronized (current_dist) {
                     // Do not act upon stale data
-                    if (loc_ts.get() <= last_read)
+                    if (dist_ts.get() <= last_read)
                         continue;
                     last_read = dist_ts.get();
                     dist = current_dist.get();
