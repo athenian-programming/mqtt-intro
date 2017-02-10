@@ -1,6 +1,7 @@
 # MQTT Intro
 
-Notes on MQTT are [here](http://www.athenian-robotics.org/mqtt/)
+Notes on MQTT are [here](http://www.athenian-robotics.org/mqtt-broker/) 
+and [here](http://www.athenian-robotics.org/mqtt-client/)
 
 ## IDE usage with this repo
 
