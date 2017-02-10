@@ -53,6 +53,8 @@ public class RobotSimulation {
                              public void messageArrived(String topic, MqttMessage msg) throws Exception {
                                  final String val = new String(msg.getPayload());
                                  System.out.println(format("%s : %s", topic, val));
+
+                                 // current_loc is synchronized on here and once in robot routines
                                  synchronized (current_loc) {
                                      current_loc.set(Integer.parseInt(val));
                                      loc_timestamp.set(System.currentTimeMillis());
@@ -66,6 +68,8 @@ public class RobotSimulation {
                              public void messageArrived(String topic, MqttMessage msg) throws Exception {
                                  final String val = new String(msg.getPayload());
                                  System.out.println(format("%s : %s", topic, val));
+
+                                 // current_dist is synchronized on here and once in robot routines
                                  synchronized (current_dist) {
                                      current_dist.set(Integer.parseInt(val));
                                      dist_timestamp.set(System.currentTimeMillis());
@@ -99,13 +103,16 @@ public class RobotSimulation {
 
         // Run the robot actions in separate threads, one for location and one for distance
         executorService.submit(() -> {
+            // Notice scope of last_read
             long last_read = 0;
+
             while (true) {
                 final int loc;
                 synchronized (current_loc) {
-                    // Do not act upon stale data
+                    // Do not act on stale data
                     if (loc_timestamp.get() <= last_read)
                         continue;
+
                     last_read = loc_timestamp.get();
                     loc = current_loc.get();
                 }
@@ -116,13 +123,16 @@ public class RobotSimulation {
         });
 
         executorService.submit(() -> {
+            // Notice scope of last_read
             long last_read = 0;
+
             while (true) {
                 final int dist;
                 synchronized (current_dist) {
-                    // Do not act upon stale data
+                    // Do not act on stale data
                     if (dist_timestamp.get() <= last_read)
                         continue;
+
                     last_read = dist_timestamp.get();
                     dist = current_dist.get();
                 }
