@@ -42,47 +42,44 @@ public class RobotSimulation {
             return;
 
         final AtomicInteger current_loc = new AtomicInteger();
-        final AtomicLong loc_ts = new AtomicLong();
+        final AtomicLong loc_timestamp = new AtomicLong();
         final AtomicInteger current_dist = new AtomicInteger();
-        final AtomicLong dist_ts = new AtomicLong();
+        final AtomicLong dist_timestamp = new AtomicLong();
 
         // The subscribe callbacks run into their own thread
-        try {
-            client.subscribe(CAMERA_TOPIC,
-                             new IMqttMessageListener() {
-                                 @Override
-                                 public void messageArrived(String topic, MqttMessage msg) throws Exception {
-                                     final String val = new String(msg.getPayload());
-                                     System.out.println(format("%s : %s", topic, val));
-                                     synchronized (current_loc) {
-                                         current_loc.set(Integer.parseInt(val));
-                                         loc_ts.set(System.currentTimeMillis());
-                                     }
+        client.subscribe(CAMERA_TOPIC,
+                         new IMqttMessageListener() {
+                             @Override
+                             public void messageArrived(String topic, MqttMessage msg) throws Exception {
+                                 final String val = new String(msg.getPayload());
+                                 System.out.println(format("%s : %s", topic, val));
+                                 synchronized (current_loc) {
+                                     current_loc.set(Integer.parseInt(val));
+                                     loc_timestamp.set(System.currentTimeMillis());
                                  }
-                             });
+                             }
+                         });
 
-            client.subscribe(LIDAR_TOPIC,
-                             new IMqttMessageListener() {
-                                 @Override
-                                 public void messageArrived(String topic, MqttMessage msg) throws Exception {
-                                     final String val = new String(msg.getPayload());
-                                     System.out.println(format("%s : %s", topic, val));
-                                     synchronized (current_dist) {
-                                         current_dist.set(Integer.parseInt(val));
-                                         dist_ts.set(System.currentTimeMillis());
-                                     }
+        client.subscribe(LIDAR_TOPIC,
+                         new IMqttMessageListener() {
+                             @Override
+                             public void messageArrived(String topic, MqttMessage msg) throws Exception {
+                                 final String val = new String(msg.getPayload());
+                                 System.out.println(format("%s : %s", topic, val));
+                                 synchronized (current_dist) {
+                                     current_dist.set(Integer.parseInt(val));
+                                     dist_timestamp.set(System.currentTimeMillis());
                                  }
-                             });
-        }
-        catch (MqttException e) {
-            System.out.println(format("Unable to subscribe [%s]", e.getMessage()));
-        }
+                             }
+                         });
 
+        // The number of threads in the thread pool must equal or exceed the number of threads running concurrently.
+        // Java has different types of thread pools: Fixed, Cached, Scheduled, Single, WorkStealing, etc.
+        // You can also pass in a ThreadFactory, which allows you to name and instrument threads.
         final ExecutorService executorService = Executors.newFixedThreadPool(4);
-        publishData(client, executorService);
 
         /*
-        Non-lambda approach to starting a Runnable in a Thread:
+        Non-lambda approach to starting a Runnable in a thread:
         executorService.submit(
                 new Runnable() {
                     @Override
@@ -91,12 +88,14 @@ public class RobotSimulation {
                     }
                 });
 
-        Lambda approach to starting a Runnable in a Thread:
+        Lambda approach to starting a Runnable in a thread:
         executorService.submit(() -> {
             // Action of thread
         });
         */
 
+        // Simulate messages sent to MQTT broker
+        publishData(client, executorService);
 
         // Run the robot actions in separate threads, one for location and one for distance
         executorService.submit(() -> {
@@ -105,9 +104,9 @@ public class RobotSimulation {
                 final int loc;
                 synchronized (current_loc) {
                     // Do not act upon stale data
-                    if (loc_ts.get() <= last_read)
+                    if (loc_timestamp.get() <= last_read)
                         continue;
-                    last_read = loc_ts.get();
+                    last_read = loc_timestamp.get();
                     loc = current_loc.get();
                 }
                 // This takes place outside of the sync block
@@ -122,9 +121,9 @@ public class RobotSimulation {
                 final int dist;
                 synchronized (current_dist) {
                     // Do not act upon stale data
-                    if (dist_ts.get() <= last_read)
+                    if (dist_timestamp.get() <= last_read)
                         continue;
-                    last_read = dist_ts.get();
+                    last_read = dist_timestamp.get();
                     dist = current_dist.get();
                 }
                 // This takes place outside of the sync block
@@ -133,25 +132,12 @@ public class RobotSimulation {
             }
         });
 
+        // Sleep indefinitely
         sleep(Integer.MAX_VALUE);
     }
 
-    public static MqttMessage newMqttMessage(final Object val) {
-        final byte[] b = ("" + val).getBytes();
-        return new MqttMessage(b);
-    }
-
-    public static void sleep(final int millis) {
-        try {
-            Thread.sleep(millis);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void publishData(final MqttClient client, final ExecutorService executorService) {
-        // Simulate data being published in different threads
+        // Simulate data being published. Run in different threads
         executorService.submit(() -> {
             try {
                 while (true) {
@@ -187,6 +173,20 @@ public class RobotSimulation {
                 System.out.println(format("Unable to publish data to %s [%s]", LIDAR_TOPIC, e.getMessage()));
             }
         });
-
     }
+
+    public static MqttMessage newMqttMessage(final Object val) {
+        final byte[] b = ("" + val).getBytes();
+        return new MqttMessage(b);
+    }
+
+    public static void sleep(final int millis) {
+        try {
+            Thread.sleep(millis);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
