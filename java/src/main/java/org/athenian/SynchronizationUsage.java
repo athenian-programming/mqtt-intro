@@ -1,6 +1,6 @@
 package org.athenian;
 
-public class SynchronizationExample {
+public class SynchronizationUsage {
 
     static final Object staticVal = new Object();
     final Object instanceVal = new Object();
@@ -33,7 +33,7 @@ public class SynchronizationExample {
 
     // Equivalent to syncStaticMethod()
     static void nonsyncStaticMethod() {
-        synchronized (SynchronizationExample.class) {
+        synchronized (SynchronizationUsage.class) {
             // Method actions
         }
     }
