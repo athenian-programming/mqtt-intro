@@ -10,34 +10,30 @@ import static java.lang.String.format;
 
 public class SysWatcher {
 
-  public static void main(final String[] argv) {
+    public static void main(final String[] argv) throws MqttException {
 
-    final BrokerArgs cliArgs = new BrokerArgs();
-    try {
-      cliArgs.parseArgs(SysWatcher.class.getName(), argv);
-    }
-    catch (MqttException e) {
-      return;
-    }
+        final BrokerArgs cliArgs = new BrokerArgs();
+        cliArgs.parseArgs(SysWatcher.class.getName(), argv);
 
-    final String mqtt_hostname = Utils.getMqttHostname(cliArgs.mqtt_arg);
-    final int mqtt_port = Utils.getMqttPort(cliArgs.mqtt_arg);
+        final String mqtt_hostname = Utils.getMqttHostname(cliArgs.mqtt_arg);
+        final int mqtt_port = Utils.getMqttPort(cliArgs.mqtt_arg);
 
-    final MqttClient client = Utils.createMqttClient(mqtt_hostname, mqtt_port, new BaseMqttCallback());
-    if (client != null) {
-      try {
-          client.subscribe("$SYS/#",
-                           0,
-                           new IMqttMessageListener() {
-                               @Override
-                               public void messageArrived(String topic, MqttMessage msg) {
-                                   System.out.println(format("%s : %s", topic, new String(msg.getPayload())));
-                               }
-                         });
-      }
-      catch (MqttException e) {
-        System.out.println(format("Unable to subscribe to system topics [%s]", e.getMessage()));
-      }
+        final MqttClient client = Utils.createMqttClient(mqtt_hostname, mqtt_port, new BaseMqttCallback());
+        if (client == null)
+            return;
+
+        try {
+            client.subscribe("$SYS/#",
+                             0,
+                             new IMqttMessageListener() {
+                                 @Override
+                                 public void messageArrived(String topic, MqttMessage msg) {
+                                     System.out.println(format("%s : %s", topic, new String(msg.getPayload())));
+                                 }
+                             });
+        }
+        catch (MqttException e) {
+            System.out.println(format("Unable to subscribe to system topics [%s]", e.getMessage()));
+        }
     }
-  }
 }
