@@ -37,6 +37,7 @@ if __name__ == "__main__":
     mqtt_conn = MqttConnection(args["mqtt"],
                                userdata={TOPIC: args["topic"]},
                                on_connect=on_connect,
+                               on_subscribe=on_subscribe,
                                on_message=on_message)
     mqtt_conn.connect()
 
