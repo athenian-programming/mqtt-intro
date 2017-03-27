@@ -6,7 +6,7 @@ from threading import Thread
 
 from constants import TOPIC
 from mqtt_connection import MqttConnection
-from utils import setup_logging, sleep
+from utils import setup_logging, waitForKeyboardInterrupt
 
 
 def on_connect(client, userdata, flags, rc):
@@ -45,18 +45,11 @@ if __name__ == "__main__":
     setup_logging()
 
     # Setup MQTT client
-    mqtt_conn = MqttConnection(args["mqtt"],
-                               userdata={TOPIC: args["topic"], "count": args["count"]},
-                               on_connect=on_connect,
-                               on_disconnect=on_disconnect,
-                               on_publish=on_publish)
-    mqtt_conn.connect()
-
-    try:
-        sleep()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        mqtt_conn.disconnect()
+    with MqttConnection(args["mqtt"],
+                        userdata={TOPIC: args["topic"], "count": args["count"]},
+                        on_connect=on_connect,
+                        on_disconnect=on_disconnect,
+                        on_publish=on_publish):
+        waitForKeyboardInterrupt()
 
     print("Exiting...")

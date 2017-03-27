@@ -4,7 +4,7 @@ import argparse
 
 from constants import TOPIC
 from mqtt_connection import MqttConnection
-from utils import setup_logging, sleep
+from utils import setup_logging, waitForKeyboardInterrupt
 
 
 def on_connect(client, userdata, flags, rc):
@@ -23,6 +23,7 @@ def on_message(client, userdata, msg):
     # If payload is an int byte array, use: int.from_bytes(msg.payload, byteorder="big"))
     # int.from_bytes() requires python3: https://docs.python.org/3/library/stdtypes.html#int.from_bytes
 
+
 if __name__ == "__main__":
     # Parse CLI args
     parser = argparse.ArgumentParser()
@@ -34,18 +35,11 @@ if __name__ == "__main__":
     setup_logging()
 
     # Setup MQTT client
-    mqtt_conn = MqttConnection(args["mqtt"],
-                               userdata={TOPIC: args["topic"]},
-                               on_connect=on_connect,
-                               on_subscribe=on_subscribe,
-                               on_message=on_message)
-    mqtt_conn.connect()
-
-    try:
-        sleep()
-    except KeyboardInterrupt:
-        pass
-    finally:
-        mqtt_conn.disconnect()
+    with MqttConnection(args["mqtt"],
+                        userdata={TOPIC: args["topic"]},
+                        on_connect=on_connect,
+                        on_subscribe=on_subscribe,
+                        on_message=on_message):
+        waitForKeyboardInterrupt()
 
     print("Exiting...")
