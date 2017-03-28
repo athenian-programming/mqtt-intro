@@ -7,17 +7,17 @@ from utils import setup_logging
 from utils import sleep
 
 
-def on_connect(client, userdata, flags, rc):
+def on_connect(mqtt_client, userdata, flags, rc):
     print("Connected with result code: {0}".format(rc))
     # Subscribe to internal broker messages
-    client.subscribe("$SYS/#")
+    mqtt_client.subscribe("$SYS/#")
 
 
-def on_disconnect(client, userdata, rc):
+def on_disconnect(mqtt_client, userdata, rc):
     print("Disconnected with result code: {0}".format(rc))
 
 
-def on_message(client, userdata, msg):
+def on_message(mqtt_client, userdata, msg):
     print("{0} : {1}".format(msg.topic, msg.payload))
 
 

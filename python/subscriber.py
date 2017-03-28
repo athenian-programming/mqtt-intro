@@ -7,16 +7,16 @@ from mqtt_connection import MqttConnection
 from utils import setup_logging, waitForKeyboardInterrupt
 
 
-def on_connect(client, userdata, flags, rc):
+def on_connect(mqtt_client, userdata, flags, rc):
     print("Connected with result code: {0}".format(rc))
-    client.subscribe(userdata[TOPIC])
+    mqtt_client.subscribe(userdata[TOPIC])
 
 
-def on_subscribe(client, userdata, mid, granted_qos):
+def on_subscribe(mqtt_client, userdata, mid, granted_qos):
     print("Subscribed with message id: {0} QOS: {1}".format(mid, granted_qos))
 
 
-def on_message(client, userdata, msg):
+def on_message(mqtt_client, userdata, msg):
     # Payload is a string byte array
     val = bytes.decode(msg.payload)
     print("{0} : {1}".format(msg.topic, val))

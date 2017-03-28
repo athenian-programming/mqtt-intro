@@ -9,24 +9,24 @@ from mqtt_connection import MqttConnection
 from utils import setup_logging, waitForKeyboardInterrupt
 
 
-def on_connect(client, userdata, flags, rc):
+def on_connect(mqtt_client, userdata, flags, rc):
     print("Connected with result code: {0}".format(rc))
-    Thread(target=publish_messages, args=(client, userdata)).start()
+    Thread(target=publish_messages, args=(mqtt_client, userdata)).start()
 
 
-def on_disconnect(client, userdata, rc):
+def on_disconnect(mqtt_client, userdata, rc):
     print("Disconnected with result code: {0}".format(rc))
 
 
-def on_publish(client, userdata, mid):
+def on_publish(mqtt_client, userdata, mid):
     print("Published value to {0} with message id {1}".format(userdata[TOPIC], mid))
 
 
-def publish_messages(client, userdata):
+def publish_messages(mqtt_client, userdata):
     for val in range(int(userdata["count"])):
         # Write a string byte array
         bval = str(val).encode('utf-8')
-        result, mid = client.publish(userdata[TOPIC], payload=bval, qos=0)
+        result, mid = mqtt_client.publish(userdata[TOPIC], payload=bval, qos=0)
         # To write an int byte array, use: bval = val.to_bytes(4, byteorder="big"):
         # int.to_bytes() requires python3: https://docs.python.org/3/library/stdtypes.html#int.to_bytes
         time.sleep(1)
