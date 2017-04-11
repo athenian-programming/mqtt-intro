@@ -11,17 +11,17 @@ import static java.lang.String.format;
 public class Subscriber {
 
     public static void main(final String[] argv) throws InterruptedException, MqttException {
-        final TopicArgs cliArgs = new TopicArgs();
-        cliArgs.parseArgs(Subscriber.class.getName(), argv);
+        final TopicArgs topicArgs = new TopicArgs();
+        topicArgs.parseArgs(Subscriber.class.getName(), argv);
 
-        final MqttClient client = Utils.createMqttClient(Utils.getMqttHostname(cliArgs.mqtt_arg),
-                                                         Utils.getMqttPort(cliArgs.mqtt_arg),
+        final MqttClient client = Utils.createMqttClient(Utils.getMqttHostname(topicArgs.mqtt_arg),
+                                                         Utils.getMqttPort(topicArgs.mqtt_arg),
                                                          new BaseMqttCallback());
         if (client == null)
             return;
 
         try {
-            client.subscribe(cliArgs.mqtt_topic,
+            client.subscribe(topicArgs.mqtt_topic,
                              new IMqttMessageListener() {
                                  @Override
                                  public void messageArrived(String topic, MqttMessage msg) throws Exception {
@@ -34,7 +34,7 @@ public class Subscriber {
                              });
         }
         catch (MqttException e) {
-            System.out.println(format("Unable to subscribe to %s [%s]", cliArgs.mqtt_topic, e.getMessage()));
+            System.out.println(format("Unable to subscribe to %s [%s]", topicArgs.mqtt_topic, e.getMessage()));
         }
     }
 }

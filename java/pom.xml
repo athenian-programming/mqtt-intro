@@ -15,20 +15,21 @@
     <properties>
         <compiler.version>3.6.0</compiler.version>
         <assembly.version>2.6</assembly.version>
-        <really.version>1.2.0</really.version>
+        <mqtt.version>1.1.0</mqtt.version>
+        <jcommander.version>1.64</jcommander.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.eclipse.paho</groupId>
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-            <version>1.1.0</version>
+            <version>${mqtt.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
-            <version>1.60</version>
+            <version>${jcommander.version}</version>
         </dependency>
 
     </dependencies>

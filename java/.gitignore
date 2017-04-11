@@ -4,11 +4,7 @@ appassembler
 logs
 .clover
 
-*.iws
-*.ids
 *.iml
-*.ipr
-
 .idea
 
 /paho*
