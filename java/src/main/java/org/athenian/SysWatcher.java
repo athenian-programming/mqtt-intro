@@ -12,11 +12,11 @@ public class SysWatcher {
 
     public static void main(final String[] argv) throws MqttException {
 
-        final BrokerArgs cliArgs = new BrokerArgs();
-        cliArgs.parseArgs(SysWatcher.class.getName(), argv);
+        final BrokerArgs brokerArgs = new BrokerArgs();
+        brokerArgs.parseArgs(SysWatcher.class.getName(), argv);
 
-        final String mqtt_hostname = Utils.getMqttHostname(cliArgs.mqtt_arg);
-        final int mqtt_port = Utils.getMqttPort(cliArgs.mqtt_arg);
+        final String mqtt_hostname = Utils.getMqttHostname(brokerArgs.mqtt_arg);
+        final int mqtt_port = Utils.getMqttPort(brokerArgs.mqtt_arg);
 
         final MqttClient client = Utils.createMqttClient(mqtt_hostname, mqtt_port, new BaseMqttCallback());
         if (client == null)
